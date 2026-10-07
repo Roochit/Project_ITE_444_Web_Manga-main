@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/swc-darwin-arm64": "^16.3.8",
     "@prisma/client": "^5.22.0",
+    "@tailwindcss/vite": "^4.3.3",
     "bcryptjs": "^3.0.3",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
@@ -22,7 +22,8 @@
     "react-chartjs-2": "^5.3.1",
     "react-dom": "^18",
     "sweetalert2": "^11.26.25",
-    "sweetalert2-react-content": "^5.1.2"
+    "sweetalert2-react-content": "^5.1.2",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "prisma": "^5.22.0"
