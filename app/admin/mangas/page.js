@@ -70,7 +70,7 @@ export default async function AdminMangasPage() {
   return (
     <>
       <SuccessAlert />
-      <NavbarAdmin />
+      <NavbarAdmin active="mangas" />
       <BootstrapClient />
 
 

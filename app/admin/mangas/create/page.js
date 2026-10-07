@@ -6,7 +6,7 @@ import CreateMangaForm from "@/components/CreateMangaForm";
 export default function CreateMangaPage() {
   return (
     <>
-      <NavbarAdmin />
+      <NavbarAdmin active="create" />
       <BootstrapClient />
 
       <div className="container mt-5" style={{ maxWidth: "700px" }}>

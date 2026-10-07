@@ -23,8 +23,8 @@ export default function Navbar() {
         <Link href="/" style={{ color: '#ccc', textDecoration: 'none' }}>
           หน้าแรก (Frontend)
         </Link>
-        <Link href="/admin/mangas" style={{ color: '#0070f3', textDecoration: 'none', fontWeight: 'bold' }}>
-          จัดการมังงะ (Admin)
+        <Link href="/admin" style={{ color: '#0070f3', textDecoration: 'none', fontWeight: 'bold' }}>
+          แดชบอร์ด (Admin)
         </Link>
       </div>
     </nav>

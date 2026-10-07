@@ -24,7 +24,9 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./public/uploads:/app/public/uploads
+      - .:/app
+      - /app/node_modules
+      - /app/.next
     environment:
       - DATABASE_URL=mysql://root:rootpassword@db:3306/manga_db
       - DATABASE_HOST=db
