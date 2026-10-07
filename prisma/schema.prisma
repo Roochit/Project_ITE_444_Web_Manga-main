@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model mangas {
+  id          Int        @id @default(autoincrement())
+  title       String
+  author      String?
+  cover_url   String     @db.Text
+  description String?    @db.Text
+  status      String     @default("ongoing")
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @default(now()) @updatedAt   
+  chapters    chapters[]
+}
+
+model chapters {
+  id             Int              @id @default(autoincrement())
+  manga_id       Int
+  chapter_number Float
+  title          String?
+  created_at     DateTime         @default(now())
+  manga          mangas           @relation(fields: [manga_id], references: [id], onDelete: Cascade)
+  pages          chapter_pages[]
+
+  @@index([manga_id])
+}
+
+model chapter_pages {
+  id          Int      @id @default(autoincrement())
+  chapter_id  Int
+  page_number Int
+  image_url   String   @db.Text
+  chapter     chapters @relation(fields: [chapter_id], references: [id], onDelete: Cascade)
+
+  @@index([chapter_id])
+}
