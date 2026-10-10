@@ -2,11 +2,18 @@ import NavbarAdmin from "@/components/NavbarAdmin";
 import BootstrapClient from "@/components/BootstrapClient";
 import DashboardCharts from "@/components/DashboardCharts";
 import prisma from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
+  const currentUser = await getCurrentUser();
+  if (!currentUser || currentUser.role !== "admin") {
+    redirect("/login?error=admin_only");
+  }
+
   // ดึงข้อมูลสถิติต่างๆ จากฐานข้อมูล
   const [
     totalMangas,
@@ -16,6 +23,10 @@ export default async function AdminDashboardPage() {
     totalPages,
     allMangasWithCount,
     recentChapters,
+    totalUsers,
+    totalAdmins,
+    totalMembers,
+    recentUsers,
   ] = await Promise.all([
     prisma.mangas.count(),
     prisma.mangas.count({ where: { status: "ongoing" } }),
@@ -46,7 +57,22 @@ export default async function AdminDashboardPage() {
         },
       },
     }),
+    prisma.users.count(),
+    prisma.users.count({ where: { role: "admin" } }),
+    prisma.users.count({ where: { role: { not: "admin" } } }),
+    prisma.users.findMany({
+      take: 5,
+      orderBy: { id: "desc" },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        created_at: true,
+      },
+    }),
   ]);
+
 
   // มังงะที่อัปเดตล่าสุด 5 เรื่อง
   const recentMangas = allMangasWithCount.slice(0, 5);
@@ -98,6 +124,13 @@ export default async function AdminDashboardPage() {
             >
               <i className="bi bi-journal-text"></i>
               <span>จัดการมังงะทั้งหมด</span>
+            </Link>
+            <Link
+              href="/admin/users"
+              className="btn btn-outline-info d-flex align-items-center gap-2"
+            >
+              <i className="bi bi-people-fill"></i>
+              <span>จัดการสมาชิก ({totalUsers})</span>
             </Link>
           </div>
         </div>
@@ -205,6 +238,33 @@ export default async function AdminDashboardPage() {
                   }}
                 >
                   <i className="bi bi-check2-circle"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 5: ผู้ใช้งานและสมาชิกทั้งหมด */}
+          <div className="col-12 col-sm-6 col-xl-3">
+            <div className="card border-0 shadow-sm rounded-4 h-100 p-3 bg-white">
+              <div className="d-flex align-items-center justify-content-between">
+                <div>
+                  <span className="text-muted small fw-semibold">ผู้ใช้งานและสมาชิก</span>
+                  <h2 className="display-6 fw-bold my-1 text-dark">{totalUsers}</h2>
+                  <div className="small text-muted d-flex align-items-center gap-1 flex-wrap">
+                    <span className="badge bg-warning text-dark">Admin {totalAdmins}</span>
+                    <span className="badge bg-primary">Member {totalMembers}</span>
+                  </div>
+                </div>
+                <div
+                  className="rounded-4 d-flex align-items-center justify-content-center text-primary"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "rgba(13, 110, 253, 0.1)",
+                    fontSize: "1.75rem",
+                  }}
+                >
+                  <i className="bi bi-people"></i>
                 </div>
               </div>
             </div>
@@ -383,6 +443,16 @@ export default async function AdminDashboardPage() {
                       <span>
                         <i className="bi bi-journals text-info me-2"></i>
                         จัดการรายการและตอนทั้งหมด
+                      </span>
+                      <i className="bi bi-chevron-right text-muted small"></i>
+                    </Link>
+                    <Link
+                      href="/admin/users"
+                      className="btn btn-light text-start d-flex justify-content-between align-items-center py-2"
+                    >
+                      <span>
+                        <i className="bi bi-people-fill text-warning me-2"></i>
+                        จัดการสมาชิกและแอดมิน ({totalUsers} บัญชี)
                       </span>
                       <i className="bi bi-chevron-right text-muted small"></i>
                     </Link>

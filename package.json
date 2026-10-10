@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "db:check": "node scripts/db-check.js",
+    "db:xampp": "node scripts/switch-db.js xampp",
+    "db:docker": "node scripts/switch-db.js docker"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",

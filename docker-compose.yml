@@ -33,6 +33,7 @@ services:
       - DATABASE_USER=root
       - DATABASE_PASSWORD=rootpassword
       - DATABASE_NAME=manga_db
+      - JWT_SECRET=manga_secret_key_jwt_super_secure_2026
     depends_on:
       db:
         condition: service_healthy

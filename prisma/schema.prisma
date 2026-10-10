@@ -40,3 +40,13 @@ model chapter_pages {
 
   @@index([chapter_id])
 }
+
+model users {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(100)
+  email      String   @unique(map: "email") @db.VarChar(100)
+  password   String   @db.VarChar(255)
+  role       String   @default("member") @db.VarChar(50)
+  created_at DateTime @default(now()) @db.Timestamp(0)
+}
+

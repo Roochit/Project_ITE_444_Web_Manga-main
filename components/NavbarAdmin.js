@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { getCurrentUser } from "@/lib/auth";
+import { logoutAction } from "@/app/login/actions";
 
-export default function NavbarAdmin({ active = "dashboard" }) {
+export default async function NavbarAdmin({ active = "dashboard" }) {
+  const user = await getCurrentUser();
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
       <div className="container">
@@ -44,23 +48,37 @@ export default function NavbarAdmin({ active = "dashboard" }) {
                 จัดการมังงะ
               </Link>
             </li>
-            {/* <li className="nav-item">
+            <li className="nav-item">
               <Link 
-                className={`nav-link ${active === "create" ? "active fw-bold text-white" : ""}`} 
-                href="/admin/mangas/create"
+                className={`nav-link ${active === "users" ? "active fw-bold text-white" : ""}`} 
+                href="/admin/users"
               >
-                <i className="bi bi-plus-circle me-1"></i>
-                เพิ่มมังงะใหม่
+                <i className="bi bi-people me-1"></i>
+                จัดการสมาชิก
               </Link>
-            </li> */}
+            </li>
           </ul>
 
-          {/* ปุ่มทางฝั่งขวา: กลับหน้าหลักฝั่งผู้ใช้งาน */}
-          <div className="d-flex align-items-center gap-2">
+          {/* ข้อมูลแอดมิน & ปุ่มทางฝั่งขวา */}
+          <div className="d-flex align-items-center gap-2 flex-wrap">
+            {user && (
+              <span className="badge bg-warning text-dark px-2 py-1 me-1 d-flex align-items-center gap-1">
+                <span>👑</span>
+                <span>{user.name}</span>
+              </span>
+            )}
+
             <Link className="btn btn-outline-light btn-sm d-flex align-items-center gap-1" href="/">
               <i className="bi bi-box-arrow-up-right"></i>
-              <span>ไปหน้าเว็บหลัก</span>
+              <span>หน้าเว็บหลัก</span>
             </Link>
+
+            <form action={logoutAction} className="m-0">
+              <button type="submit" className="btn btn-danger btn-sm d-flex align-items-center gap-1">
+                <i className="bi bi-box-arrow-right"></i>
+                <span>ออกจากระบบ</span>
+              </button>
+            </form>
           </div>
         </div>
       </div>
