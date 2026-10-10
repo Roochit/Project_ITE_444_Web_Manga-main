@@ -130,14 +130,17 @@ export default function UserListTable({ users, currentUserId }) {
                       {isAdmin ? "👑 Admin" : "👤 Member"}
                     </span>
                   </td>
-                  <td className="small text-muted">
-                    {new Date(u.created_at).toLocaleString("th-TH", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                  <td className="small text-muted" suppressHydrationWarning>
+                    {u.created_at
+                      ? new Date(u.created_at).toLocaleString("th-TH", {
+                          timeZone: "Asia/Bangkok",
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      : "-"}
                   </td>
                   <td className="text-end">
                     <div className="d-flex justify-content-end gap-1">

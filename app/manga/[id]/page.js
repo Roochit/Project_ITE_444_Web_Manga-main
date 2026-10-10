@@ -90,8 +90,12 @@ export default async function MangaDetailPage({ params }) {
                     <span className="fw-bold me-2">ตอนที่ {chapter.chapter_number}</span>
                     <span className="text-secondary">{chapter.title || ""}</span>
                   </div>
-                  <small className="text-muted">
-                    {new Date(chapter.created_at).toLocaleDateString("th-TH")}
+                  <small className="text-muted" suppressHydrationWarning>
+                    {chapter.created_at
+                      ? new Date(chapter.created_at).toLocaleDateString("th-TH", {
+                          timeZone: "Asia/Bangkok",
+                        })
+                      : ""}
                   </small>
                 </Link>
               ))

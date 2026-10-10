@@ -116,8 +116,12 @@ export default async function ManageChaptersPage({ params }) {
                           {chapter._count.pages} หน้า
                         </span>
                       </td>
-                      <td className="text-center text-muted fs-7">
-                        {new Date(chapter.created_at).toLocaleDateString("th-TH")}
+                      <td className="text-center text-muted fs-7" suppressHydrationWarning>
+                        {chapter.created_at
+                          ? new Date(chapter.created_at).toLocaleDateString("th-TH", {
+                              timeZone: "Asia/Bangkok",
+                            })
+                          : "-"}
                       </td>
                       <td className="text-center">
                         <div className="d-flex justify-content-center gap-2">
