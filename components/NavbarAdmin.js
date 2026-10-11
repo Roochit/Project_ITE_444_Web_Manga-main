@@ -57,6 +57,16 @@ export default async function NavbarAdmin({ active = "dashboard" }) {
                 จัดการสมาชิก
               </Link>
             </li>
+            <li className="nav-item">
+              <Link 
+                className={`nav-link ${active === "logs" ? "active fw-bold text-white" : ""}`} 
+                href="/admin/logs"
+              >
+                <i className="bi bi-clock-history me-1"></i>
+                บันทึกการเข้าชม (Logs)
+              </Link>
+            </li>
+
           </ul>
 
           {/* ข้อมูลแอดมิน & ปุ่มทางฝั่งขวา */}

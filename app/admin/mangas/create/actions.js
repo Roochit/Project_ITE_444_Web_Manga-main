@@ -12,6 +12,7 @@ export async function createManga(prevState, formData) {
   const author = formData.get("author")?.trim() || "";
   const description = formData.get("description")?.trim() || "";
   const status = formData.get("status") || "ongoing";
+  const is_member_only = formData.get("is_member_only") === "on" || formData.get("is_member_only") === "true";
   const coverFile = formData.get("cover_image");
 
   const errors = [];
@@ -40,6 +41,7 @@ export async function createManga(prevState, formData) {
         author,
         description,
         status,
+        is_member_only,
       },
     };
   }
@@ -68,6 +70,7 @@ export async function createManga(prevState, formData) {
         cover_url: coverUrl,
         description,
         status,
+        is_member_only,
       },
     });
   } catch (error) {
@@ -79,6 +82,7 @@ export async function createManga(prevState, formData) {
         author,
         description,
         status,
+        is_member_only,
       },
     };
   }

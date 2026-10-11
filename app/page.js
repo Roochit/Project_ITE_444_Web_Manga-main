@@ -9,6 +9,7 @@ export default async function Home({ searchParams }) {
   const resolvedSearchParams = await searchParams;
   const q = resolvedSearchParams?.q?.trim() || "";
   const status = resolvedSearchParams?.status || "all";
+  const type = resolvedSearchParams?.type || "all";
 
   // สร้างเงื่อนไขค้นหาและหมวดหมู่สถานะ
   const where = {};
@@ -22,6 +23,12 @@ export default async function Home({ searchParams }) {
 
   if (status && status !== "all") {
     where.status = status;
+  }
+
+  if (type === "member") {
+    where.is_member_only = true;
+  } else if (type === "public") {
+    where.is_member_only = false;
   }
 
   // ดึงข้อมูลมังงะตามเงื่อนไขค้นหา
@@ -41,6 +48,30 @@ export default async function Home({ searchParams }) {
       <BootstrapClient />
 
       <div className="container mt-4 mb-5">
+        {/* แบนเนอร์เชิญชวนเข้าชมมังงะเฉพาะสมาชิก */}
+        <div
+          className="p-3 p-md-4 rounded-4 shadow-sm mb-4 text-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3"
+          style={{
+            background: "linear-gradient(135deg, #1e1b4b 0%, #3730a3 100%)",
+            border: "1px solid rgba(255, 255, 255, 0.15)",
+          }}
+        >
+          <div>
+            <span className="badge bg-warning text-dark fw-bold mb-1">⭐ Exclusive Member Area</span>
+            <h3 className="h4 fw-bold mb-1">มังงะพิเศษเฉพาะสมาชิก "นาราไนก้า (Yaranai ka)"</h3>
+            <p className="small mb-0 text-light opacity-90">
+              เข้าสู่ระบบวันนี้เพื่ออ่านมังงะในตำนาน และคอนเทนต์พิเศษเฉพาะสมาชิกเท่านั้น
+            </p>
+          </div>
+          <Link
+            href="/members"
+            className="btn btn-warning text-dark fw-bold px-4 py-2 rounded-pill shadow-sm text-nowrap d-flex align-items-center gap-2"
+          >
+            <span>⭐ ไปยังหน้ามังงะเฉพาะสมาชิก</span>
+            <span>→</span>
+          </Link>
+        </div>
+
         {/* หัวข้อและฟอร์มค้นหา / หมวดหมู่ */}
         <div className="bg-light p-4 rounded-3 shadow-sm mb-4">
           <div className="row align-items-center gy-3">
@@ -53,6 +84,7 @@ export default async function Home({ searchParams }) {
 
             <div className="col-lg-7">
               <form method="GET" action="/" className="row g-2">
+                <input type="hidden" name="type" value={type} />
                 <div className="col-sm-7">
                   <input
                     type="text"
@@ -82,27 +114,41 @@ export default async function Home({ searchParams }) {
 
           {/* Quick Filter Badges */}
           <div className="d-flex align-items-center gap-2 mt-3 flex-wrap">
-            <span className="small text-muted me-1">หมวดหมู่สถานะ:</span>
+            <span className="small text-muted me-1">ประเภท:</span>
             <Link
-              href={q ? `/?q=${encodeURIComponent(q)}&status=all` : `/?status=all`}
-              className={`btn btn-sm ${status === "all" ? "btn-dark" : "btn-outline-secondary"}`}
+              href={`/?q=${encodeURIComponent(q)}&status=${status}&type=all`}
+              className={`btn btn-sm ${type === "all" ? "btn-dark" : "btn-outline-secondary"}`}
             >
               ทั้งหมด
             </Link>
             <Link
-              href={q ? `/?q=${encodeURIComponent(q)}&status=ongoing` : `/?status=ongoing`}
-              className={`btn btn-sm ${status === "ongoing" ? "btn-warning text-dark fw-bold" : "btn-outline-warning text-dark"}`}
+              href={`/?q=${encodeURIComponent(q)}&status=${status}&type=public`}
+              className={`btn btn-sm ${type === "public" ? "btn-primary" : "btn-outline-primary"}`}
             >
-              🟡 กำลังดำเนินเรื่อง (Ongoing)
+              📖 มังงะทั่วไป
             </Link>
             <Link
-              href={q ? `/?q=${encodeURIComponent(q)}&status=completed` : `/?status=completed`}
-              className={`btn btn-sm ${status === "completed" ? "btn-success fw-bold" : "btn-outline-success"}`}
+              href={`/?q=${encodeURIComponent(q)}&status=${status}&type=member`}
+              className={`btn btn-sm ${type === "member" ? "btn-warning text-dark fw-bold" : "btn-outline-warning text-dark"}`}
             >
-              🟢 จบแล้ว (Completed)
+              ⭐ เฉพาะสมาชิก VIP
             </Link>
 
-            {(q || status !== "all") && (
+            <span className="small text-muted ms-md-3 me-1">สถานะ:</span>
+            <Link
+              href={`/?q=${encodeURIComponent(q)}&status=ongoing&type=${type}`}
+              className={`btn btn-sm ${status === "ongoing" ? "btn-warning text-dark fw-bold" : "btn-outline-warning text-dark"}`}
+            >
+              🟡 ยังไม่จบ
+            </Link>
+            <Link
+              href={`/?q=${encodeURIComponent(q)}&status=completed&type=${type}`}
+              className={`btn btn-sm ${status === "completed" ? "btn-success fw-bold" : "btn-outline-success"}`}
+            >
+              🟢 จบแล้ว
+            </Link>
+
+            {(q || status !== "all" || type !== "all") && (
               <Link href="/" className="btn btn-sm btn-link text-danger ms-auto">
                 ✕ ล้างตัวกรอง
               </Link>
@@ -142,11 +188,16 @@ export default async function Home({ searchParams }) {
                       alt={manga.title}
                       style={{ height: "300px", objectFit: "cover" }}
                     />
+                    {manga.is_member_only && (
+                      <span className="badge bg-warning text-dark position-absolute top-0 start-0 m-2 fw-bold shadow-sm">
+                        ⭐ เฉพาะสมาชิก
+                      </span>
+                    )}
                     <span
                       className={`badge position-absolute top-0 end-0 m-2 ${
                         manga.status === "completed"
                           ? "bg-success"
-                          : "bg-warning text-dark"
+                          : "bg-info text-dark"
                       }`}
                     >
                       {manga.status === "completed" ? "จบแล้ว" : "ยังไม่จบ"}
@@ -155,6 +206,7 @@ export default async function Home({ searchParams }) {
                       📖 {manga._count.chapters} ตอน
                     </span>
                   </div>
+
 
                   <div className="card-body d-flex flex-column">
                     <h5 className="card-title text-truncate fw-bold mb-1" title={manga.title}>

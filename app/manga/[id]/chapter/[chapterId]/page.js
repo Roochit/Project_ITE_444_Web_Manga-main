@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -13,10 +14,13 @@ export default async function ReadChapterPage({ params }) {
     notFound();
   }
 
-  // ดึงข้อมูลตอนปัจจุบันพร้อมรูปภาพ
+  const currentUser = await getCurrentUser();
+
+  // ดึงข้อมูลตอนปัจจุบันพร้อมรูปภาพและข้อมูลมังงะ
   const chapter = await prisma.chapters.findUnique({
     where: { id: chapterId },
     include: {
+      manga: true,
       pages: {
         orderBy: { page_number: "asc" },
       },
@@ -24,6 +28,52 @@ export default async function ReadChapterPage({ params }) {
   });
 
   if (!chapter) notFound();
+
+  // หากเป็นมังงะเฉพาะสมาชิก และผู้ใช้ยังไม่ได้ล็อกอิน ให้แสดงหน้าจอล็อคเนื้อหา
+  if (chapter.manga.is_member_only && !currentUser) {
+    return (
+      <div className="bg-dark text-white min-vh-100 py-5 d-flex align-items-center justify-content-center">
+        <div
+          className="card text-white border-warning p-4 p-md-5 text-center shadow-lg rounded-4"
+          style={{
+            maxWidth: "580px",
+            background: "linear-gradient(145deg, #1f2937, #111827)",
+          }}
+        >
+          <div className="display-4 mb-3">🔒</div>
+          <span className="badge bg-warning text-dark fw-bold px-3 py-2 mb-3 mx-auto">
+            ⭐ สิทธิพิเศษเฉพาะสมาชิก (VIP Only)
+          </span>
+          <h3 className="fw-bold mb-2 text-warning">
+            {chapter.manga.title} - ตอนที่ {chapter.chapter_number}
+          </h3>
+          <p className="text-secondary mb-4">
+            ตอนนี้เปิดให้อ่านเฉพาะสมาชิกเท่านั้น กรุณาเข้าสู่ระบบ หรือสมัครสมาชิกเพื่ออ่านตอนทั้งหมด
+          </p>
+          <div className="d-flex justify-content-center gap-3 flex-wrap">
+            <Link
+              href={`/login?redirect=/manga/${mangaId}/chapter/${chapterId}`}
+              className="btn btn-warning text-dark fw-bold px-4 py-2"
+            >
+              🔑 เข้าสู่ระบบเพื่ออ่าน
+            </Link>
+            <Link
+              href="/register"
+              className="btn btn-outline-info px-4 py-2"
+            >
+              📝 สมัครสมาชิกใหม่
+            </Link>
+            <Link
+              href={`/manga/${mangaId}`}
+              className="btn btn-outline-secondary px-3 py-2"
+            >
+              ← หน้ารายละเอียดมังงะ
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // ดึงรายการตอนทั้งหมดของมังงะเรื่องนี้ เรียงตามเลขตอน
   const allChapters = await prisma.chapters.findMany({
@@ -41,6 +91,7 @@ export default async function ReadChapterPage({ params }) {
 
   return (
     <div className="bg-dark text-white min-vh-100 py-4">
+
       <div className="container">
         {/* แถบเมนูด้านบน */}
         <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 border-bottom border-secondary pb-3">

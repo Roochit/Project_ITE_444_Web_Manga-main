@@ -134,9 +134,17 @@ export default async function AdminMangasPage() {
                         />
                       </td>
                       <td>
-                        <strong>{manga.title}</strong>
+                        <div className="d-flex align-items-center gap-2 flex-wrap">
+                          <strong>{manga.title}</strong>
+                          {manga.is_member_only && (
+                            <span className="badge bg-warning text-dark small">
+                              ⭐ เฉพาะสมาชิก
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td>{manga.author || "-"}</td>
+
                       <td className="text-center">
                         <span
                           className={`badge ${

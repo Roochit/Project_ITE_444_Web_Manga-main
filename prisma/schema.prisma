@@ -8,15 +8,16 @@ datasource db {
 }
 
 model mangas {
-  id          Int        @id @default(autoincrement())
-  title       String
-  author      String?
-  cover_url   String     @db.Text
-  description String?    @db.Text
-  status      String     @default("ongoing")
-  created_at  DateTime   @default(now())
-  updated_at  DateTime   @default(now()) @updatedAt   
-  chapters    chapters[]
+  id             Int        @id @default(autoincrement())
+  title          String
+  author         String?
+  cover_url      String     @db.Text
+  description    String?    @db.Text
+  status         String     @default("ongoing")
+  is_member_only Boolean    @default(false)
+  created_at     DateTime   @default(now())
+  updated_at     DateTime   @default(now()) @updatedAt   
+  chapters       chapters[]
 }
 
 model chapters {
@@ -42,11 +43,28 @@ model chapter_pages {
 }
 
 model users {
-  id         Int      @id @default(autoincrement())
-  name       String   @db.VarChar(100)
-  email      String   @unique(map: "email") @db.VarChar(100)
-  password   String   @db.VarChar(255)
-  role       String   @default("member") @db.VarChar(50)
-  created_at DateTime @default(now()) @db.Timestamp(0)
+  id         Int          @id @default(autoincrement())
+  name       String       @db.VarChar(100)
+  email      String       @unique(map: "email") @db.VarChar(100)
+  password   String       @db.VarChar(255)
+  role       String       @default("member") @db.VarChar(50)
+  created_at DateTime     @default(now()) @db.Timestamp(0)
+  visit_logs visit_logs[]
 }
+
+model visit_logs {
+  id         Int      @id @default(autoincrement())
+  ip_address String?  @db.VarChar(100)
+  user_agent String?  @db.Text
+  path       String   @db.VarChar(255)
+  referrer   String?  @db.Text
+  user_id    Int?
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  user       users?   @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  @@index([user_id])
+  @@index([created_at])
+  @@index([path])
+}
+
 

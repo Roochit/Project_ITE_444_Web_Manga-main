@@ -108,6 +108,26 @@ export default function EditMangaForm({ manga, updateMangaAction }) {
         </select>
       </div>
 
+      <div className="mb-3 p-3 bg-light rounded-3 border">
+        <div className="form-check form-switch">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            role="switch"
+            id="editMemberOnlySwitch"
+            name="is_member_only"
+            defaultChecked={Boolean(values.is_member_only)}
+          />
+          <label className="form-check-label fw-bold text-dark" htmlFor="editMemberOnlySwitch">
+            ⭐ จำกัดเฉพาะสมาชิกอ่านได้ (Member Only)
+          </label>
+        </div>
+        <small className="text-muted d-block mt-1">
+          หากเปิดใช้งาน มังงะเรื่องนี้จะถูกจัดในหมวดหมู่เฉพาะสมาชิก และบุคคลทั่วไปจะต้องเข้าสู่ระบบก่อนจึงจะสามารถเปิดอ่านได้
+        </small>
+      </div>
+
+
       <div className="mb-3">
         <label className="form-label fw-bold">เรื่องย่อ (Description) *</label>
         <textarea

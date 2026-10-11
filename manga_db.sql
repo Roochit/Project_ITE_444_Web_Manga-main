@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.4.34-MariaDB, for debian-linux-gnu (aarch64)
+-- MariaDB dump 10.19  Distrib 10.4.28-MariaDB, for osx10.10 (x86_64)
 --
 -- Host: localhost    Database: manga_db
 -- ------------------------------------------------------
--- Server version	10.4.34-MariaDB-1:10.4.34+maria~ubu2004
+-- Server version	10.4.28-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -30,7 +30,7 @@ CREATE TABLE `chapter_pages` (
   PRIMARY KEY (`id`),
   KEY `chapter_pages_chapter_id_idx` (`chapter_id`),
   CONSTRAINT `chapter_pages_chapter_id_fkey` FOREIGN KEY (`chapter_id`) REFERENCES `chapters` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `chapter_pages` (
 
 LOCK TABLES `chapter_pages` WRITE;
 /*!40000 ALTER TABLE `chapter_pages` DISABLE KEYS */;
-INSERT INTO `chapter_pages` VALUES (5,13,1,'/uploads/chapters/1790103600363_0_1.1.jpg'),(6,13,2,'/uploads/chapters/1790103600369_1_1.2.jpg'),(7,12,1,'/uploads/chapters/1790103622258_0_2.1.jpg'),(8,12,2,'/uploads/chapters/1790103622270_1_2.2.jpg'),(12,15,1,'/uploads/chapters/1790103940249_0_1.jpg'),(13,15,2,'/uploads/chapters/1790103940254_1_2.jpg'),(14,15,3,'/uploads/chapters/1790103940257_2_3.jpg'),(15,15,4,'/uploads/chapters/1790103940261_3_4.jpg');
+INSERT INTO `chapter_pages` VALUES (5,13,1,'/uploads/chapters/1790103600363_0_1.1.jpg'),(6,13,2,'/uploads/chapters/1790103600369_1_1.2.jpg'),(7,12,1,'/uploads/chapters/1790103622258_0_2.1.jpg'),(8,12,2,'/uploads/chapters/1790103622270_1_2.2.jpg'),(12,15,1,'/uploads/chapters/1790103940249_0_1.jpg'),(13,15,2,'/uploads/chapters/1790103940254_1_2.jpg'),(14,15,3,'/uploads/chapters/1790103940257_2_3.jpg'),(15,15,4,'/uploads/chapters/1790103940261_3_4.jpg'),(16,16,1,'/uploads/chapters/yaranaika_p1.jpg'),(17,16,2,'/uploads/chapters/yaranaika_p2.jpg');
 /*!40000 ALTER TABLE `chapter_pages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,7 +59,7 @@ CREATE TABLE `chapters` (
   PRIMARY KEY (`id`),
   KEY `chapters_manga_id_idx` (`manga_id`),
   CONSTRAINT `chapters_manga_id_fkey` FOREIGN KEY (`manga_id`) REFERENCES `mangas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +68,7 @@ CREATE TABLE `chapters` (
 
 LOCK TABLES `chapters` WRITE;
 /*!40000 ALTER TABLE `chapters` DISABLE KEYS */;
-INSERT INTO `chapters` VALUES (12,2,2,'ตอนที่2','2026-09-22 18:10:43.221'),(13,2,1,'ตอนที่1','2026-09-22 18:14:07.969'),(15,5,1,'ตอนที่1','2026-09-22 19:04:07.510');
+INSERT INTO `chapters` VALUES (12,2,2,'ตอนที่2','2026-09-22 18:10:43.221'),(13,2,1,'ตอนที่1','2026-09-22 18:14:07.969'),(15,5,1,'ตอนที่1','2026-09-22 19:04:07.510'),(16,6,1,'การพบกันบนม้านั่งในสวนสาธารณะ (ยาราไนก้า)','2026-10-11 07:58:54.499');
 /*!40000 ALTER TABLE `chapters` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,8 +88,9 @@ CREATE TABLE `mangas` (
   `status` varchar(191) NOT NULL DEFAULT 'ongoing',
   `created_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
   `updated_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
+  `is_member_only` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +99,7 @@ CREATE TABLE `mangas` (
 
 LOCK TABLES `mangas` WRITE;
 /*!40000 ALTER TABLE `mangas` DISABLE KEYS */;
-INSERT INTO `mangas` VALUES (2,'คนรับใช้ของคุณหนู','https://pbs.twimg.com/media/HDzT4etboAIrehC?format=jpg&name=4096x4096','คนรับใช้ของคุณหนู','@yagikunn1733','ongoing','2026-09-21 16:52:52.000','2026-09-22 18:59:37.679'),(3,'naruto','https://m.media-amazon.com/images/I/81mPBf1Fi1S._AC_UF894,1000_QL80_.jpg','naruto','บีเวอร์2','completed','2026-09-21 17:43:06.000','2026-09-23 00:43:49.672'),(5,'one piece','https://m.media-amazon.com/images/M/MV5BMTNjNGU4NTUtYmVjMy00YjRiLTkxMWUtNzZkMDNiYjZhNmViXkEyXkFqcGc@._V1_.jpg','ลูฟี่ผจญภัย','ODA','ongoing','2026-09-22 19:03:37.307','2026-09-22 19:04:07.535');
+INSERT INTO `mangas` VALUES (2,'คนรับใช้ของคุณหนู','https://pbs.twimg.com/media/HDzT4etboAIrehC?format=jpg&name=4096x4096','คนรับใช้ของคุณหนู','@yagikunn1733','ongoing','2026-09-21 16:52:52.000','2026-09-22 18:59:37.679',0),(3,'naruto','https://m.media-amazon.com/images/I/81mPBf1Fi1S._AC_UF894,1000_QL80_.jpg','naruto','บีเวอร์2','completed','2026-09-21 17:43:06.000','2026-09-23 00:43:49.672',0),(5,'one piece','https://m.media-amazon.com/images/M/MV5BMTNjNGU4NTUtYmVjMy00YjRiLTkxMWUtNzZkMDNiYjZhNmViXkEyXkFqcGc@._V1_.jpg','ลูฟี่ผจญภัย','ODA','ongoing','2026-09-22 19:03:37.307','2026-09-22 19:04:07.535',0),(6,'นาราไนก้า (Yaranai ka)','/uploads/mangas/yaranaika_cover.jpg','มังงะสุดไอคอนิกระดับตำนานเฉพาะสมาชิก \"นาราไนก้า\" (Kuso Miso Technique) เรื่องราวของ มาซากิ มิจิตะ นักเรียนเตรียมสอบที่กำลังวิ่งไปห้องน้ำในสวนสาธารณะ แล้วได้สบตากับ ทาคากาซึ อาเบะ ชายหนุ่มร่างกำยำในชุดหมีสีน้ำเงินบนม้านั่ง กับประโยคในตำนานที่ไม่มีใครลืมเลือน \"ยาราไนก้า?\" (จะเอาไหมล่ะ?)','จุนอิจิ ยามากาวะ (Junichi Yamakawa)','completed','2026-10-11 07:58:54.495','2026-10-11 07:58:54.495',1);
 /*!40000 ALTER TABLE `mangas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,6 +131,39 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (1,'Admin Manga','admin@manga.com','$2b$10$eQNvuaSoQvqChuQ.UsD5P.LoMWSYYSy8malYTmCGo7M842KyS.qIe','admin','2026-10-10 12:54:00'),(2,'Member User','member@manga.com','$2b$10$kvY5iOOh9w0smscH5J9QDOkP7UfLPjYBNhmJBkrLr5HcYpW9Yl9.a','member','2026-10-10 12:54:00'),(4,'รอชิด ขำเจริญ','kh.roochit_st@tni.ac.th','$2b$10$9dOXp4XPGdM7CFQ84UDs8ehC533geNfBJmplJVKLUaLeCEVCRXJTe','admin','2026-10-10 13:40:39');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `visit_logs`
+--
+
+DROP TABLE IF EXISTS `visit_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `visit_logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(100) DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `path` varchar(255) NOT NULL,
+  `referrer` text DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_visit_logs_user_id` (`user_id`),
+  KEY `idx_visit_logs_created_at` (`created_at`),
+  KEY `idx_visit_logs_path` (`path`),
+  CONSTRAINT `fk_visit_logs_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `visit_logs`
+--
+
+LOCK TABLES `visit_logs` WRITE;
+/*!40000 ALTER TABLE `visit_logs` DISABLE KEYS */;
+INSERT INTO `visit_logs` VALUES (1,'127.0.0.1','Node test','/test',NULL,NULL,'2026-10-11 01:01:27'),(2,'::1','curl/8.7.1','/',NULL,NULL,'2026-10-11 01:04:09'),(3,'::1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36','/',NULL,1,'2026-10-11 01:08:35'),(4,'::1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36','/members',NULL,1,'2026-10-11 01:13:10'),(5,'::1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36','/',NULL,1,'2026-10-11 01:13:43'),(6,'::1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36','/',NULL,1,'2026-10-11 01:14:48'),(7,'::1','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36','/login',NULL,NULL,'2026-10-11 01:19:06');
+/*!40000 ALTER TABLE `visit_logs` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -140,4 +174,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-10 16:23:21
+-- Dump completed on 2026-10-11 15:19:24

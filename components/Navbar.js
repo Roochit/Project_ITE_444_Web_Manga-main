@@ -49,6 +49,27 @@ export default async function Navbar() {
           หน้าแรก
         </Link>
 
+        <Link
+          href="/members"
+          style={{
+            color: "#fbbf24",
+            textDecoration: "none",
+            fontSize: "0.95rem",
+            fontWeight: "bold",
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+            padding: "4px 12px",
+            borderRadius: "6px",
+            backgroundColor: "rgba(251, 191, 36, 0.12)",
+            border: "1px solid rgba(251, 191, 36, 0.35)",
+          }}
+        >
+          <span>⭐</span>
+          <span>มังงะเฉพาะสมาชิก</span>
+        </Link>
+
+
         {user?.role === "admin" && (
           <Link
             href="/admin"
